@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<section id="form" xmlns="http://www.w3.org/1999/html"><!--form-->
+		<div class="container">
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="signup-form"><!--sign up form-->
+                        <form method="POST">
+                            {% csrf_token %}
+                            {% for message in messages %}
+                            <center><font color="red"><h3>{{message}}</h3></font></center>
+                            {% endfor %}
+						<h2>New User Signup!</h2>
+							<input name = "first_name" class="form-control" type="text" placeholder="First Name" required/>
+                            <input name = "last_name" class="form-control" type="text" placeholder="Last Name"required/>
+							<input name = "email" class="form-control" type="email" placeholder="E-mail Address" required/>
+                            <input name = "username" class="form-control" type="text" placeholder="User Name"required/>
+							<input name = "password" class="form-control" type="password" placeholder="Password" required/>
+                            <input name = "cpassword" class="form-control" type="password" placeholder="Confirm Password" required/>
+							<button type="submit" class="btn btn-default">Signup</button>
+                        </form>
+					</div><!--/sign up form-->
+				</div>
+			</div>
+		</div>
+	</section><!--/form-->
+
+{% endblock %}
