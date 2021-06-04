@@ -62,30 +62,24 @@
 						</div>
 					</div>
 					<div class="col-sm-8">
-						<div class="shop-menu pull-right">
+						<div class="mainmenu pull-right">
 							<ul class="nav navbar-nav">
-								<li><a href="checkout.html"><i class="fa fa-crosshairs"></i> Checkout</a></li>
-								<li><a href="cart.html"><i class="fa fa-shopping-cart"></i> Cart</a></li>
-								<li>
-									<div class="navbar-nav ml-auto">
-										{% if user.is_authenticated %}
-                             			<div class="nav-item dropdown">
-                                			<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{user.username}}</a>
-                                				<div class="dropdown-menu">
-                                    				<a href="/accounts/logout" class="dropdown-item">Log Out</a>
-												</div
-										</div>
-										{% else %}
-                            			<div class="nav-item dropdown">
-                                			<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">User Account</a>
-                              				  <div class="dropdown-menu">
-                                    			<a href="/signin" class="dropdown-item">Login</a>
-												  <a href="/signup" class="dropdown-item">Register</a>
-											  </div>
-                            			</div>
-										{% endif %}
-                        			</div>
-								</li>
+								<li><a href="checkout"><i class="fa fa-crosshairs"></i> Checkout</a></li>
+								<li><a href="cart"><i class="fa fa-shopping-cart"></i> Cart</a></li>
+								{% if user.is_authenticated %}
+								<li class="dropdown"><a href="#">{{user.username}}<i class="fa fa-angle-down"></i></a>
+                                    <ul role="menu" class="sub-menu">
+                                        <li><a href="/accounts/logout">Logout</a></li>
+                                    </ul>
+                                </li>
+								{% else %}
+								<li class="dropdown"><a href="#">User Account<i class="fa fa-angle-down"></i></a>
+                                    <ul role="menu" class="sub-menu">
+                                        <li><a href="/signin">Login</a></li>
+										<li><a href="/signup">Register</a></li>
+                                    </ul>
+                                </li>
+								{% endif %}
 							</ul>
 						</div>
 					</div>
@@ -110,21 +104,21 @@
 								<li><a href="/" class="active">Home</a></li>
 								<li class="dropdown"><a href="#">Shop<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
-                                        <li><a href="shop.html">Products</a></li>
-										<li><a href="product-details.html">Product Details</a></li>
-										<li><a href="checkout.html">Checkout</a></li>
-										<li><a href="cart.html">Cart</a></li>
-										<li><a href="login.html">Login</a></li>
+                                        <li><a href="shop">Products</a></li>
+										<li><a href="product-details">Product Details</a></li>
+										<li><a href="checkout">Checkout</a></li>
+										<li><a href="cart">Cart</a></li>
+										<li><a href="login">Login</a></li>
                                     </ul>
                                 </li>
 								<li class="dropdown"><a href="#">Blog<i class="fa fa-angle-down"></i></a>
                                     <ul role="menu" class="sub-menu">
-                                        <li><a href="blog.html">Blog List</a></li>
-										<li><a href="blog-single.html">Blog Single</a></li>
+                                        <li><a href="blog">Blog List</a></li>
+										<li><a href="blog-single">Blog Single</a></li>
                                     </ul>
                                 </li>
-								<li><a href="404.html">404</a></li>
-								<li><a href="contact-us.html">Contact</a></li>
+								<li><a href="404">404</a></li>
+								<li><a href="contact">Contact</a></li>
 							</ul>
 						</div>
 					</div>

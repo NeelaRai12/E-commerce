@@ -53,7 +53,7 @@ def register(request):
                 return redirect('home:signup')
 
         else:
-            messages.error(request, 'Password doesnot match each other.')
+            messages.error(request, 'Password does not match each other.')
             return redirect('home:signup')
 
     return render(request,'signup.html')
@@ -74,7 +74,32 @@ def signin(request):
     return render(request,'signin.html')
 
 
+def contact(request):
+    return render(request,'contact-us.html')
 
+def blog(request):
+    return render(request,'blog.html')
+
+def blogsingle(request):
+    return render(request,'blog-single.html')
+
+def shop(request):
+    return render(request,'shop.html')
+
+def product_details(request):
+    return render(request,'product-details.html')
+
+def checkout(request):
+    return render(request,'checkout.html')
+
+def cart(request):
+    return render(request,'cart.html')
+
+def login(request):
+    return render(request,'login.html')
+
+def error(request):
+    return render(request,'404.html')
 
 
 
