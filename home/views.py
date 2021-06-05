@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.views.generic.base import View
 
-from home.models import Category, Slider, Brand, Item
+from home.models import Category, Slider, Brand, Item, Contact, ContactInformation
 
 
 class BaseView(View):
@@ -75,7 +75,25 @@ def signin(request):
 
 
 def contact(request):
-    return render(request,'contact-us.html')
+    view = {}
+    if request.method == "POST":
+        name = request.POST['name']
+        email = request.POST['email']
+        subject = request.POST['subject']
+        message = request.POST['message']
+
+        data = Contact.objects.create(
+            name = name,
+            email = email,
+            subject = subject,
+            message = message
+        )
+        data.save()
+        view['success'] = "The message is submited."
+
+    view['info'] = ContactInformation.objects.all()
+
+    return render(request,'contact-us.html',view)
 
 def blog(request):
     return render(request,'blog.html')

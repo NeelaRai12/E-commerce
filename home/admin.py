@@ -5,3 +5,10 @@ admin.site.register(Category)
 admin.site.register(Slider)
 admin.site.register(Brand)
 admin.site.register(Item)
+
+admin.site.register(Contact)
+admin.site.register(ContactInformation)
+
+
+
+

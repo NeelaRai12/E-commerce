@@ -47,6 +47,31 @@ class Item(models.Model):
     def __str__(self):
         return self.title
 
+class Contact(models.Model):
+    name = models.CharField(max_length= 100)
+    email = models.CharField(max_length= 200)
+    subject = models.CharField(max_length= 500)
+    message = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+class ContactInformation(models.Model):
+    name = models.CharField(max_length= 300, blank= True)
+    address = models.CharField(max_length= 300)
+    tole = models.CharField(max_length= 300)
+    contact_no = models.CharField(max_length= 300)
+    fax_no = models.CharField(max_length= 300)
+    email = models.CharField(max_length= 300)
+
+    def __str__(self):
+        return self.name
+
+
+
+
+
+
 
 
 
