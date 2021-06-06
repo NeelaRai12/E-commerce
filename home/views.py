@@ -5,7 +5,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.views.generic.base import View
 
-from home.models import Category, Slider, Brand, Item, Contact, ContactInformation
+from home.models import Category, Slider, Brand, Item, Contact, ContactInformation, Cart
 
 
 class BaseView(View):
@@ -110,16 +110,68 @@ def product_details(request):
 def checkout(request):
     return render(request,'checkout.html')
 
-def cart(request):
-    return render(request,'cart.html')
-
 def login(request):
     return render(request,'login.html')
 
 def error(request):
     return render(request,'404.html')
 
+class ViewCart(BaseView):
+    def get(self, request):
+        self.views['carts'] = Cart.objects.filter(user = request.user.username)
 
+        return render(request,'cart.html',self.views)
+
+def cart(request,slug):
+    if Cart.objects.filter(slug = slug, user = request.user.username).exists():
+        quantity = Cart.objects.get(slug = slug, user = request.user.username).quantity
+        quantity = quantity +1
+        price = Item.objects.get(slug = slug).price
+        discounted_price = Item.objects.get(slug = slug).discounted_price
+        if discounted_price >0:
+            total = discounted_price * quantity
+        else:
+            total = price * quantity
+        Cart.objects.filter(slug=slug, user=request.user.username).update(quantity = quantity, total = total)
+
+    else:
+        price = Item.objects.get(slug = slug).price
+        discounted_price = Item.objects.get(slug = slug).discounted_price
+        if discounted_price >0:
+            total = discounted_price
+        else:
+            total = price
+
+        data = Cart.objects.create(
+            user = request.user.username,
+            slug = slug,
+            item = Item.objects.filter(slug = slug)[0],
+            total = total
+        )
+        data.save()
+
+    return redirect('home:mycart')
+
+def  deletecart(request,slug):
+    if Cart.objects.filter(slug= slug, user = request.user.username).exists():
+        Cart.objects.filter(slug=slug, user=request.user.username).delete()
+        messages.success(request,'The item is deleted.')
+    return redirect("home:mycart")
+
+def delete_single_cart(request,slug):
+    if Cart.objects.filter(slug = slug, user = request.user.username).exists():
+        quantity = Cart.objects.get(slug = slug, user = request.user.username).quantity
+        quantity = quantity -1
+        price = Item.objects.get(slug=slug).price
+        discounted_price = Item.objects.get(slug=slug).discounted_price
+        if discounted_price > 0:
+            total = discounted_price * quantity
+        else:
+            total = price * quantity
+
+        Cart.objects.filter(slug=slug, user=request.user.username).update(quantity = quantity, total = total)
+
+        return redirect("home:mycart")
 
 
 
