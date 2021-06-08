@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="category-tab shop-details-tab"><!--category-tab-->
+						<div class="col-sm-12">
+							<ul class="nav nav-tabs">
+								<li><a href="#details" data-toggle="tab">Details</a></li>
+								<li><a href="#companyprofile" data-toggle="tab">Company Profile</a></li>
+								<li><a href="#tag" data-toggle="tab">Tag</a></li>
+								<li class="active"><a href="review" data-toggle="tab">Reviews (5)</a></li>
+							</ul>
+						</div>
+						<div class="tab-content">
+							<div class="tab-pane fade" id="details" >
+								{% for productdetails in productdetails_item %}
+								<div class="col-sm-3">
+									<div class="product-image-wrapper">
+										<div class="single-products">
+											<div class="productinfo text-center">
+												<img src="images/home/gallery1.jpg" alt="" />
+												<h2>{{productdetails.price}}</h2>
+												<p>{{productdetails.title}}</p>
+												<a href="{{new.get_cart_url}}" button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button></a>
+											</div>
+										</div>
+									</div>
+								</div>
+								{% endfor %}
+							</div>
+
+							<div class="tab-pane fade" id="companyprofile" >
+								{% for profile in profile_items %}
+								<div class="col-sm-3">
+									<div class="product-image-wrapper">
+										<div class="single-products">
+											<div class="productinfo text-center">
+												<img src="{{profile.image}}" alt="" />
+												<h2>{{profile.price}}</h2>
+												<p>{{profile.title}}</p>
+												<a href="{{new.get_cart_url}}" button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button></a>
+											</div>
+										</div>
+									</div>
+								</div>
+								{% endfor %}
+							</div>
+
+							<div class="tab-pane fade" id="tag" >
+								{% for tag in tag_items %}
+								<div class="col-sm-3">
+									<div class="product-image-wrapper">
+										<div class="single-products">
+											<div class="productinfo text-center">
+												<img src="{{tag.image}}" alt="" />
+												<h2>{{tag.price}}</h2>
+												<p>{{tag.title}}</p>
+												<a href="{{new.get_cart_url}}" button type="button" class="btn btn-default add-to-cart"><i class="fa fa-shopping-cart"></i>Add to cart</button></a>
+											</div>
+										</div>
+									</div>
+								</div>
+								{% endfor %}
+							</div>
+							<div class="row">
+								<div class="tab-pane fade active in" id="reviews" >
+									<div class="col-sm-12">
+										<ul>
+											<li><a href=""><i class="fa fa-user"></i>EUGEN</a></li>
+											<li><a href=""><i class="fa fa-clock-o"></i>12:41 PM</a></li>
+											<li><a href=""><i class="fa fa-calendar-o"></i>31 DEC 2014</a></li>
+										</ul>
+										<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.</p>
+										<p><b>Write Your Review</b></p>
+
+										<form action="#" method="POST">
+											{% csrf_token %}
+											<span>
+												<input name="subject" class="input" type="text" placeholder="Your Subject"/>
+											</span>
+											<textarea name="comment" class="input" placeholder="Your review" ></textarea>
+											<b>Rating: </b> <img src="{% static 'images/product-details/rating.png' %}" alt="" />
+											{% if user.id is not None %}
+											<input type="submit" name="submit" class="btn btn-primary pull-right" value="Submit">
+											{% else %}
+											<span>
+											<h3>You must logged in to post a review</h3>
+											</span>
+											{% endif %}
+										</form>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div><!--/category-tab-->
+{% endblock %}

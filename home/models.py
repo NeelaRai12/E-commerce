@@ -1,4 +1,6 @@
+from django.contrib.auth.models import User
 from django.db import models
+from django.forms import ModelForm
 from django.urls import reverse
 
 STATUS = (('In', 'In Stock'), ('Out', 'Out of Stock'))
@@ -9,7 +11,7 @@ LABEL = (('new', 'New Product'), ('hot', 'Hot Product'), ('sale', 'Sale Product'
 class Category(models.Model):
     name = models.CharField(max_length=200)
     slug = models.CharField(max_length=200, unique=True)
-    image = models.CharField(max_length=200, blank=True)
+    image = models.ImageField(upload_to= 'media')
 
     def __str__(self):
         return self.name
@@ -17,7 +19,7 @@ class Category(models.Model):
 
 class Slider(models.Model):
     name = models.CharField(max_length=300)
-    image = models.TextField()
+    image = models.ImageField(upload_to= 'media')
     description = models.TextField()
     url = models.TextField(blank=True)
 
@@ -27,7 +29,7 @@ class Slider(models.Model):
 
 class Brand(models.Model):
     name = models.CharField(max_length=300)
-    image = models.TextField()
+    image = models.ImageField(upload_to= 'media')
 
     def __str__(self):
         return self.name
@@ -43,13 +45,10 @@ class Item(models.Model):
     brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     status = models.CharField(max_length=50, choices=STATUS)
     label = models.CharField(max_length=60, choices=LABEL, default='new')
-    image = models.TextField(blank=True)
+    image = models.ImageField(upload_to= 'media')
 
     def __str__(self):
         return self.title
-
-    def get_url(self):
-        return reverse("home:product", kwargs={'slug':self.slug})
 
     def get_cart_url(self):
         return reverse("home:add-to-cart", kwargs={'slug':self.slug})
@@ -93,10 +92,40 @@ class Cart(models.Model):
         return reverse("home:delete-single-cart", kwargs = {'slug':self.slug})
 
 
+#
+# class Comment(models.Model):
+#     STATUS = (
+#         ('New', 'New'),
+#         ('True', 'True'),
+#         ('False', 'False'),
+#     )
+#     item = models.ForeignKey(Item,on_delete=models.CASCADE)
+#     user= models.ForeignKey(User,on_delete=models.CASCADE)
+#     subject = models.CharField(max_length= 50, blank= True)
+#     comment = models.CharField(max_length= 250, blank= True)
+#     rate = models.IntegerField(default=1)
+#     ip = models.TextField(max_length= 20,blank= True)
+#     status = models.CharField(max_length= 10,choices=STATUS,default='New')
+#     create_at = models.DateTimeField(auto_now=True)
+#     update_at = models.DateTimeField(auto_now= True)
+#
+#     def __str__(self):
+#         self.subject
+#
+#
+# class CommentForm(ModelForm):
+#     class Meta:
+#         model = Comment
+#         fields = ['subject', 'comment', 'rate']
 
+class Review(models.Model):
+    subject = models.CharField(max_length= 50, blank= True)
+    comment = models.CharField(max_length= 250, blank= True)
+    create_at = models.DateTimeField(auto_now=True)
+    update_at = models.DateTimeField(auto_now= True)
 
-
-
+    def __str__(self):
+        self.subject
 
 
 
