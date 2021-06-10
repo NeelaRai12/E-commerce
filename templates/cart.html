@@ -18,7 +18,7 @@
 							<td class="description"></td>
 							<td class="price">Price</td>
 							<td class="quantity">Quantity</td>
-							<td class="total">Total</td>
+							<td class="total">Subtotal</td>
 							<td class="delete">Remove</td>
 							<td></td>
 						</tr>
@@ -27,7 +27,7 @@
 					{% for cart in carts.all %}
 						<tr>
 							<td class="cart_product">
-								<a href="#"><img src="{{cart.item.image}}" height="80" width="100" alt=""></a>
+								<a href="#"><img src="{{cart.item.image.url}}" height="80" width="100" alt=""></a>
 							</td>
 							<td class="cart_description">
 								<h4><a href="">{{cart.item.title}}</a></h4>
@@ -131,8 +131,8 @@
 							<li>Shipping Cost <span>Free</span></li>
 							<li>Total <span>$61</span></li>
 						</ul>
-							<a class="btn btn-default update" href="">Update</a>
-							<a class="btn btn-default check_out" href="">Check Out</a>
+							<a class="btn btn-default update" href="shop">Update</a>
+							<a class="btn btn-default check_out" href="checkout">Check Out</a>
 					</div>
 				</div>
 			</div>

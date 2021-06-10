@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect
 # Create your views here.
 from django.views.generic.base import View
 
-from home.models import Category, Slider, Brand, Item, Contact, ContactInformation, Cart, Review
+from home.models import Category, Slider, Brand, Item, Contact, ContactInformation, Cart, Review, Blog
 from django.core.mail import EmailMultiAlternatives
 
 
@@ -36,6 +36,16 @@ class ProductDetailsView(BaseView):
         self.views['new_items'] = Item.objects.filter(label='new')
 
         return render(request,'product-details.html',self.views)
+
+class ShopDetailsView(BaseView):
+    def get(self, request):
+        self.views['categories'] = Category.objects.all()
+        self.views['brands'] = Brand.objects.all()
+        self.views['hot_items'] = Item.objects.filter(label='hot')
+        self.views['new_items'] = Item.objects.filter(label='new')
+        self.views['sale_items'] = Item.objects.filter(label='sale')
+
+        return render(request,'shop.html',self.views)
 
 
 def register(request):
@@ -87,9 +97,24 @@ def signin(request):
 
     return render(request,'signin.html')
 
+class BlogDetailsView(BaseView):
+    def get(self, request):
+        self.views['categories'] = Category.objects.all()
+        self.views['brands'] = Brand.objects.all()
+        self.views['new_blog'] = Blog.objects.filter(label='new')
+        self.views['hot_blog'] = Blog.objects.filter(label='hot')
+        self.views['sale_blog'] = Blog.objects.filter(label='sale')
 
-def blog(request):
-    return render(request,'blog.html')
+        return render(request,'blog.html',self.views)
+
+class BlogSingleDetailsView(BaseView):
+    def get(self, request):
+        self.views['categories'] = Category.objects.all()
+        self.views['brands'] = Brand.objects.all()
+        self.views['new_blog'] = Blog.objects.filter(label='new')
+
+
+        return render(request,'blog-single.html',self.views)
 
 def blogsingle(request):
     return render(request,'blog-single.html')
@@ -219,7 +244,7 @@ def review(request):
             comment= comment
         )
         data.save()
-        view['success'] = "The message is submited."
+        view['success'] = "The message is submitted."
 
     return render(request, 'review.html', view)
 

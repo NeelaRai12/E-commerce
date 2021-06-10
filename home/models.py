@@ -54,6 +54,7 @@ class Item(models.Model):
         return reverse("home:add-to-cart", kwargs={'slug':self.slug})
 
 
+
 class Contact(models.Model):
     name = models.CharField(max_length= 100)
     email = models.CharField(max_length= 200)
@@ -125,7 +126,18 @@ class Review(models.Model):
     update_at = models.DateTimeField(auto_now= True)
 
     def __str__(self):
-        self.subject
+        return self.subject
 
 
+class Blog(models.Model):
+    title = models.CharField(max_length= 50)
+    date = models.DateTimeField(auto_now= True)
+    time = models.DateTimeField(auto_now= True)
+    status = models.CharField(max_length=50, choices=STATUS, null=True)
+    label = models.CharField(max_length=60, choices=LABEL, default='new')
+    image = models.ImageField(upload_to='media')
+    description = models.TextField(null=True)
+
+    def __str__(self):
+        return self.title
 
