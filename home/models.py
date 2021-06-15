@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.forms import ModelForm
 from django.urls import reverse
+from django.utils import timezone
 
 STATUS = (('In', 'In Stock'), ('Out', 'Out of Stock'))
 LABEL = (('new', 'New Product'), ('hot', 'Hot Product'), ('sale', 'Sale Product'))
@@ -92,33 +93,6 @@ class Cart(models.Model):
     def delete_single_cart_url(self):
         return reverse("home:delete-single-cart", kwargs = {'slug':self.slug})
 
-
-#
-# class Comment(models.Model):
-#     STATUS = (
-#         ('New', 'New'),
-#         ('True', 'True'),
-#         ('False', 'False'),
-#     )
-#     item = models.ForeignKey(Item,on_delete=models.CASCADE)
-#     user= models.ForeignKey(User,on_delete=models.CASCADE)
-#     subject = models.CharField(max_length= 50, blank= True)
-#     comment = models.CharField(max_length= 250, blank= True)
-#     rate = models.IntegerField(default=1)
-#     ip = models.TextField(max_length= 20,blank= True)
-#     status = models.CharField(max_length= 10,choices=STATUS,default='New')
-#     create_at = models.DateTimeField(auto_now=True)
-#     update_at = models.DateTimeField(auto_now= True)
-#
-#     def __str__(self):
-#         self.subject
-#
-#
-# class CommentForm(ModelForm):
-#     class Meta:
-#         model = Comment
-#         fields = ['subject', 'comment', 'rate']
-
 class Review(models.Model):
     subject = models.CharField(max_length= 50, blank= True)
     comment = models.CharField(max_length= 250, blank= True)
@@ -131,8 +105,8 @@ class Review(models.Model):
 
 class Blog(models.Model):
     title = models.CharField(max_length= 50)
-    date = models.DateTimeField(auto_now= True)
-    time = models.DateTimeField(auto_now= True)
+    publish = models.DateTimeField(default=timezone.now)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, default= True)
     status = models.CharField(max_length=50, choices=STATUS, null=True)
     label = models.CharField(max_length=60, choices=LABEL, default='new')
     image = models.ImageField(upload_to='media')
@@ -140,4 +114,41 @@ class Blog(models.Model):
 
     def __str__(self):
         return self.title
+
+class Post(models.Model):
+    options = (
+        ('draft','Draft'),
+        ('published','Published'),
+    )
+    title = models.CharField(max_length= 250)
+    slug = models.SlugField(max_length= 250)
+    publish= models.DateTimeField(default= timezone.now)
+    author = models.ForeignKey(User,on_delete= models.CASCADE)
+    content = models.TextField()
+    image = models.ImageField(upload_to='media',null= True)
+    status = models.CharField(max_length= 10, choices= options, default='draft')
+
+    class Meta:
+        ordering = ('-publish',)
+
+    def __str__(self):
+        return self.title
+
+
+class Comment(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE,related_name= "comments")
+    name = models.CharField(max_length= 50)
+    email = models.EmailField()
+    content = models.TextField()
+    publish = models.DateTimeField(auto_now_add= True)
+    status = models.BooleanField(default= True)
+    image = models.ImageField(upload_to='media', null=True)
+
+    class Meta:
+        ordering = ('publish',)
+
+    def __str__(self):
+        return f"Comment by{self.name}"
+
+
 

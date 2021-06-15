@@ -1,12 +1,12 @@
 from django.contrib.auth.models import User
 from django.contrib import messages, auth
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
 from django.views.generic.base import View
 
-from home.models import Category, Slider, Brand, Item, Contact, ContactInformation, Cart, Review, Blog
+from home.models import Category, Slider, Brand, Item, Contact, ContactInformation, Cart, Review, Blog, Post
 from django.core.mail import EmailMultiAlternatives
 
 
@@ -36,6 +36,21 @@ class ProductDetailsView(BaseView):
         self.views['new_items'] = Item.objects.filter(label='new')
 
         return render(request,'product-details.html',self.views)
+
+def review(request):
+    view = {}
+    if request.method == "POST":
+        subject = request.POST['subject']
+        comment = request.POST['comment']
+
+        data = Review.objects.create(
+            subject = subject,
+            comment= comment
+        )
+        data.save()
+        view['success'] = "The message is submitted."
+
+    return render(request, 'review.html', view)
 
 class ShopDetailsView(BaseView):
     def get(self, request):
@@ -112,12 +127,36 @@ class BlogSingleDetailsView(BaseView):
         self.views['categories'] = Category.objects.all()
         self.views['brands'] = Brand.objects.all()
         self.views['new_blog'] = Blog.objects.filter(label='new')
-
+        # self.views['posts'] = Post.objects.filter()
+        # self.views['comments'] = Post.objects.filter()
 
         return render(request,'blog-single.html',self.views)
 
-def blogsingle(request):
-    return render(request,'blog-single.html')
+
+def post(request,post):
+    post = get_object_or_404(Post,slug=post, status='published')
+    comments = post.comments.filter(status=True)
+    user_comment = None
+    if request.method == 'POST':
+        comment_form = NewCommentForm(request.POST)
+        if comment_form.is_valid():
+            user_comment = comment_form.save(commit=False)
+            user_comment.post = post
+            user_comment.save()
+            return HttpResponseRedirect('/',+ post.slug)
+    else:
+        comment_form = NewCommentForm()
+    return render(
+        request,
+        "blog-single.html",
+        {
+            "post":post,
+            "comments":user_comment,
+            "comments":comments,
+            "comment_form":comment_form,
+        },
+    )
+
 
 def shop(request):
     return render(request,'shop.html')
@@ -233,42 +272,6 @@ def contact(request):
 
     return render(request,'contact-us.html',view)
 
-def review(request):
-    view = {}
-    if request.method == "POST":
-        subject = request.POST['subject']
-        comment = request.POST['comment']
-
-        data = Review.objects.create(
-            subject = subject,
-            comment= comment
-        )
-        data.save()
-        view['success'] = "The message is submitted."
-
-    return render(request, 'review.html', view)
-
-
-
-# def Comment_Add(request, id):
-#     url = request.META.get('HTTP_REFERER')
-#     if request.method == "POST":
-#         pos = CommentForm(request.POST)
-#         if pos.is_invalid():
-#             data = Comment()
-#             data.subject = pos.cleamed_data['subject']
-#             data.comment = pos.cleamed_data['comment']
-#             data.rate = pos.cleamed_data['rate']
-#             data.ip = request.META.get('REMOTE_ADDR')
-#             data.item_id = id
-#             current_user = request.user
-#             data.user_id = current_user.id
-#             messages.success(request,'Your comment has been sent.')
-#             return HttpResponseRedirect(url)
-#         return HttpResponseRedirect(url)
-#
-#
-# def review(request):
 
 
 
