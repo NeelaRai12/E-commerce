@@ -45,11 +45,11 @@
 				</div>
 
 				<div class="col-sm-9 padding-right">
-					{% for detail in detail_items %}
+					{% for item in items %}
 					<div class="product-details"><!--product-details-->
 						<div class="col-sm-5">
 							<div class="view-product">
-								<img src="{{item.product.image.url}}" alt="" />
+								<img src="{{item.image.url}}" alt="" />
 								<h3>ZOOM</h3>
 							</div>
 							<div id="similar-product" class="carousel slide" data-ride="carousel">
@@ -57,13 +57,13 @@
 								  <!-- Wrapper for slides -->
 								    <div class="carousel-inner">
 										<div class="item active">
-										  <a href=""><img src="{{detail.image}}" alt=""></a>
+										  <a href=""><img src="{{item.image.url}}" height="100" width="100" alt=""></a>
 										</div>
 										<div class="item">
-										  <a href=""><img src="{{detail.image}}" alt=""></a>
+										  <a href=""><img src="{{item.image.url}}" height="100" width="100" alt=""></a>
 										</div>
 										<div class="item">
-										  <a href=""><img src="{{detail.image}}" alt=""></a>
+										  <a href=""><img src="{{item.image.url}}" height="100" width="100" alt=""></a>
 										</div>
 
 									</div>
@@ -80,26 +80,34 @@
 						</div>
 						<div class="col-sm-7">
 							<div class="product-information"><!--/product-information-->
-								<img src="images/product-details/new.jpg" class="newarrival" alt="" />
+								<img src="{% static 'images/product-details/new.jpg' %}" class="newarrival" alt="" />
 								<h2>{{item.title}}</h2>
 								<img src="{% static 'images/product-details/rating.png' %}" alt="" />
 								<span>
 									<span>{{item.price}}</span>
 									<label>Quantity:</label>
 									<input type="text" value="3" />
-									<button type="button" class="btn btn-fefault cart">
+									<a href="{{item.get_cart_url}}" button type="button" class="btn btn-default cart">
 										<i class="fa fa-shopping-cart"></i>
-										Add to cart
+										Add to cart</a>
 									</button>
 								</span>
 								<p><b>Availability:</b> In Stock</p>
 								<p><b>Condition:</b> New</p>
 								<p><b>Brand:</b> E-SHOPPER</p>
-								<a href=""><img src="images/product-details/share.png" class="share img-responsive"  alt="" /></a>
+								<a href=""><img src="{% static 'images/product-details/share.png' %}" class="share img-responsive"  alt="" /></a>
+<!--								<form method="POST">-->
+<!--									{% csrf_token %}-->
+<!--									<h3>Liked it?</h3>-->
+<!--									<a href="" class="btn btn-lg btn-info ml-2">Yes</a>-->
+<!--									<input type="submit" class="btn btn-lg btn-danger" value="No">-->
+<!--								</form>-->
+
 							</div><!--/product-information-->
 						</div>
 					</div><!--/product-details-->
 					{% endfor %}
+
 					<div class="category-tab shop-details-tab"><!--category-tab-->
 						<div class="col-sm-12">
 							<ul class="nav nav-tabs">

@@ -6,7 +6,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 # Create your views here.
 from django.views.generic.base import View
 
-from home.models import Category, Slider, Brand, Item, Contact, ContactInformation, Cart, Review, Blog, Post
+from home.models import Category, Slider, Brand, Item, Contact, ContactInformation, Cart, Review, Blog, Post, Comment
 from django.core.mail import EmailMultiAlternatives
 
 
@@ -29,13 +29,15 @@ class ProductDetailsView(BaseView):
     def get(self, request):
         self.views['categories'] = Category.objects.all()
         self.views['brands'] = Brand.objects.all()
-        self.views['detail_items'] = Item.objects.filter(label = 'detail')
+        self.views['items'] = Item.objects.all()
         self.views['productdetails_items'] = Item.objects.filter(label = 'productdetails')
         self.views['profile_items'] = Item.objects.filter(label='profile')
         self.views['tag_items'] = Item.objects.filter(label='tag')
         self.views['new_items'] = Item.objects.filter(label='new')
 
         return render(request,'product-details.html',self.views)
+
+
 
 def review(request):
     view = {}
@@ -127,35 +129,10 @@ class BlogSingleDetailsView(BaseView):
         self.views['categories'] = Category.objects.all()
         self.views['brands'] = Brand.objects.all()
         self.views['new_blog'] = Blog.objects.filter(label='new')
-        # self.views['posts'] = Post.objects.filter()
-        # self.views['comments'] = Post.objects.filter()
+        self.views['posts'] = Post.objects.filter()
+        self.views['comments'] = Comment.objects.filter()
 
         return render(request,'blog-single.html',self.views)
-
-
-def post(request,post):
-    post = get_object_or_404(Post,slug=post, status='published')
-    comments = post.comments.filter(status=True)
-    user_comment = None
-    if request.method == 'POST':
-        comment_form = NewCommentForm(request.POST)
-        if comment_form.is_valid():
-            user_comment = comment_form.save(commit=False)
-            user_comment.post = post
-            user_comment.save()
-            return HttpResponseRedirect('/',+ post.slug)
-    else:
-        comment_form = NewCommentForm()
-    return render(
-        request,
-        "blog-single.html",
-        {
-            "post":post,
-            "comments":user_comment,
-            "comments":comments,
-            "comment_form":comment_form,
-        },
-    )
 
 
 def shop(request):

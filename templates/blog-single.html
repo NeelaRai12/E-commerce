@@ -196,7 +196,7 @@
 					{% endfor %}
 
 					<div class="response-area">
-						<h2>3 RESPONSES</h2>
+						<h2> RESPONSES</h2>
 						<ul class="media-list">
 							{% with comments.count as total_comments %}
 							<h2>{{total_comments}} comment {{total_comments|pluralize}}</h2>
@@ -213,21 +213,32 @@
 										<li><i class="fa fa-calendar"></i>{{comment.publish}}</li>
 									</ul>
 									<p>{{comment.content}}</p>
-									<a class="btn btn-primary" href=""><i class="fa fa-reply"></i>Replay</a>
+
+									<div class="reply mx-0">
+										<button class="btn btn-primary" data-target="#collapseExample" type="button" data-toggle="collapse" aria-expanded="false" aria-controls="collapseExample" href=""><i class="fa fa-reply"></i>Reply</button>
+										<div class="collapse" id="collapseExample">
+											<div class="card card-body my-2">
+												Reply dine.
+											</div>
+										</div>
+									</div>
+
 								</div>
 							</li>
 							{% empty %}
 							<p>There is no comments for this post.</p>
 							{% endfor %}
 							<h2>Make a new comment.</h2>
-						</ul>					
+						</ul>
 					</div><!--/Response-area-->
 
 					<div class="replay-box">
 						<div class="row">
 							<div class="col-sm-4">
 								<h2>Leave a replay</h2>
-								<form>
+								<form method="POST">
+									{{comment_form.as_p}}
+									{% csrf_token %}
 									<div class="blank-arrow">
 										<label>Your Name</label>
 									</div>

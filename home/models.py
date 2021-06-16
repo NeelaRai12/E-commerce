@@ -148,7 +148,7 @@ class Comment(models.Model):
         ordering = ('publish',)
 
     def __str__(self):
-        return f"Comment by{self.name}"
+        return self.name
 
 
 
