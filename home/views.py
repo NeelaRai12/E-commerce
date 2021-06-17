@@ -153,6 +153,7 @@ class ViewCart(BaseView):
 
         return render(request,'cart.html',self.views)
 
+
 def cart(request,slug):
     if Cart.objects.filter(slug = slug, user = request.user.username).exists():
         quantity = Cart.objects.get(slug = slug, user = request.user.username).quantity
@@ -163,6 +164,7 @@ def cart(request,slug):
             total = discounted_price * quantity
         else:
             total = price * quantity
+
         Cart.objects.filter(slug=slug, user=request.user.username).update(quantity = quantity, total = total)
 
     else:

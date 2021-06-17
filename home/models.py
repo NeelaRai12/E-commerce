@@ -83,6 +83,7 @@ class Cart(models.Model):
     user = models.CharField(max_length= 200)
     date = models.DateTimeField(auto_now= True)
     total = models.IntegerField(null= True)
+    addtotal = models.IntegerField(null=True)
 
     def __str__(self):
         return self.user
@@ -92,6 +93,8 @@ class Cart(models.Model):
 
     def delete_single_cart_url(self):
         return reverse("home:delete-single-cart", kwargs = {'slug':self.slug})
+
+
 
 class Review(models.Model):
     subject = models.CharField(max_length= 50, blank= True)

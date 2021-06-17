@@ -21,5 +21,6 @@ urlpatterns = [
     path('delete-cart/<slug>', deletecart, name='delete-cart'),
     path('delete-single-cart/<slug>', delete_single_cart, name='delete-single-cart'),
     path('review',review, name='review'),
+    path('checkout',CheckoutView.as_view(),name='checkout'),
 ]
 
