@@ -13,7 +13,7 @@ urlpatterns = [
     path('blog',BlogDetailsView.as_view(), name = 'blog'),
     path('blog-single',BlogSingleDetailsView.as_view(), name = 'blog-single'),
     path('shop', shop, name='shop'),
-    path('checkout',checkout, name = 'checkout'),
+    path('checkout',CheckoutView.as_view(), name = 'checkout'),
     path('mycart', ViewCart.as_view(), name='mycart'),
     path('login', login, name='login'),
     path('404', error, name='404'),
@@ -21,6 +21,5 @@ urlpatterns = [
     path('delete-cart/<slug>', deletecart, name='delete-cart'),
     path('delete-single-cart/<slug>', delete_single_cart, name='delete-single-cart'),
     path('review',review, name='review'),
-    path('checkout',CheckoutView.as_view(),name='checkout'),
 ]
 

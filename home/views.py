@@ -2,6 +2,7 @@ from django.contrib.auth.models import User
 from django.contrib import messages, auth
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect, get_object_or_404
+from.forms import CheckoutForm
 
 # Create your views here.
 from django.views.generic.base import View
@@ -138,8 +139,21 @@ class BlogSingleDetailsView(BaseView):
 def shop(request):
     return render(request,'shop.html')
 
-def checkout(request):
-    return render(request,'checkout.html')
+class CheckoutView(BaseView):
+    def get(self, *args, **kwargs):
+        form = CheckoutForm()
+        context = {
+            'form': form
+        }
+
+        return render(self.request,'checkout.html')
+
+    def post(self, *args, **kwargs):
+        form = CheckoutForm(self.request.POST or None)
+        if form.is_valid():
+            print(" The form is valid")
+            return redirect('core:checkout')
+
 
 def login(request):
     return render(request,'login.html')
